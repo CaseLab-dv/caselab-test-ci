@@ -2,20 +2,31 @@ name: CI
 on: [push]
 jobs:
   build:
-    runs-on: vv ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions,,/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '16'
-      - run: |
-          node -e "
-          const v = parseInt(p   rocess.versions.node.split('.')[0]);
-          console.log('npm warn EBADENGINE unsupported engine');
-          console.log('npm warn EBADENGINE   required: { node: >=18 }');
-          console.log('npm warn EBADENGINE   current: { node: v' + process.versions.node + ' }');
-          console.error('npm error code EBADENGINE');
-          console.error('npm error Required: {node: >=18}');
-          console.error('npm error Actual: {node: v' + process.versions.node + '}');
-          process.exit(1);
-          "
+      - run: npm install
+      - name: Simulate CI failure
+        run: |
+          echo "npm warn EBADENGINE unsupported engine"
+          echo "npm warn EBADENGINE   package: my-app@1.0.0"
+          echo "npm warn EBADENGINE   required: { node: '>=18' }"
+          echo "npm warn EBADENGINE   current: { node: 'v16.20.2', npm: '8.19.4' }"
+          echo "npm error code EBADENGINE"
+          echo "npm error engine Unsupported engine"
+          echo "npm error Required: {\"node\":\">=18\"}"
+          echo "npm error Actual:   {\"node\":\"v16.20.2\",\"npm\":\"8.19.4\"}"
+          echo ""
+          echo "npm error code ERESOLVE"
+          echo "npm error ERESOLVE unable to resolve dependency tree"
+          echo "npm error Found: react@17.0.2"
+          echo "npm error Could not resolve dependency:"
+          echo "npm error peer react@^18.0.0 from @some/ui@2.0.0"
+          echo ""
+          echo "npm error code E401"
+          echo "npm error 401 Unauthorized - GET https://registry.npmjs.org/@mycompany%2futils"
+          echo "npm error A complete log of this run can be found in: /home/runner/.npm/_logs/debug.log"
+          exit 1
