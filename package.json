@@ -1,5 +1,5 @@
 {
-  "name": "caselab-test-ci",
+  "name": "caselab-test-ci",,
   "version": "1.0.0",
   "engines": {
     "node": ">=18"
